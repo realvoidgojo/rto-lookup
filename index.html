@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="widtd=device-width, initial-scale=1.0" />
+    <title>RTO Finder</title>
+    <!--google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!--tailwindcss CDN-->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!--CSS-->
+    <link rel="stylesheet" href="./assests/style.css" />
+  </head>
+  <body class="bg-[#304661]">
+    <main>
+      <!--Header-->
+      <div class="h-64 bg-[#285DA1]">
+        <!-- Navbar -->
+        <nav class="bg-[#285DA1] p-4">
+          <div class="flex justify-between items-center">
+            <!--Toggle Dark Mode-->
+            <button
+              id="darkModeToggle"
+              class="bg-gray-800 text-xs text-white py-1 px-2 rounded hover:bg-gray-900 transition-colors duration-300"
+            >
+              Toggle Dark Mode
+            </button>
+
+            <!--About and GitHub-->
+            <ul
+              class="flex space-x-6 text-[#E09301] font-semibold text-sm uppercase"
+            >
+              <li
+                class="relative group cursor-pointer hover:text-white transition-colors duration-300"
+              >
+                About
+                <!--Dev Tooltip -->
+                <span
+                  class="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-max px-3 py-1 text-xs text-white bg-gray-800 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  Developed by RealVoidGojo
+                </span>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-white transition-colors duration-300"
+                >
+                  GitHub
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!--Search Section-->
+        <div class="flex flex-col justify-center items-center space-y-4">
+          <h1 class="text-3xl font-extrabold text-[#E09301]">
+            <span class="block text-base text-gray-100 mb-1">India's</span>
+            <span>RTO License Lookup</span>
+          </h1>
+
+          <!-- Search Bar -->
+          <div class="relative w-half max-w-sm mx-auto">
+            <div class="input-container relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                class="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500"
+              >
+                <path
+                  fill="currentColor"
+                  d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"
+                />
+              </svg>
+              <input
+                type="search"
+                placeholder="Search License Plate"
+                class="w-full bg-white text-sm pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E09301] uppercase placeholder:normal-case tracking-widest placeholder:tracking-normal border border-gray-300"
+              />
+              <div class="tooltip">Invalid license plate format</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Loading Spinner-->
+      <div
+        id="loadingSpinner"
+        class="flex items-center justify-center mt-50 hidden"
+      >
+        <svg
+          class="animate-spin h-5 w-5 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8H4z"
+          ></path>
+        </svg>
+      </div>
+
+      <!--Result-->
+      <div class="bg-white shadow m-10 p-5 rounded hidden" id="resultSection">
+        <span class="text-xs"> Your Query:</span>
+        <span class="font-semibold" id="query">TN95</span>
+        <table class="my-5 text-sm w-full" id="resultTable">
+          <tr>
+            <td class="border border-gray-400 p-2">ID</td>
+            <td class="border border-gray-400 p-2" id="id">1</td>
+          </tr>
+          <tr>
+            <td class="border border-gray-400 p-2">Code</td>
+            <td class="border border-gray-400 p-2" id="rto_code">TN01</td>
+          </tr>
+          <tr>
+            <td class="border border-gray-400 p-2">Location</td>
+            <td class="border border-gray-400 p-2" id="location">
+              Chennai (Central): Ayanavaram
+            </td>
+          </tr>
+          <tr>
+            <td class="border border-gray-400 p-2">District</td>
+            <td class="border border-gray-400 p-2" id="district">Chennai</td>
+          </tr>
+        </table>
+      </div>
+    </main>
+
+    <script src="./assests/js/main.js"></script>
+  </body>
+</html>
