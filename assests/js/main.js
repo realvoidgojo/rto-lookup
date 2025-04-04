@@ -23,9 +23,10 @@ async function searchRecord(value) {
     loadingSpinner.classList.remove("hidden");
     const jsonData = await getJSON();
 
-    const found = jsonData.find((record) => {
-      return value.substring(0, 5) === record.code || value.substring(0, 4) === record.code;
-    });
+    const found = jsonData
+  .filter(record => value.startsWith(record.code))
+  .sort((a, b) => b.code.length - a.code.length)[0];
+
 
     if (found) {
       document.querySelector("#query").textContent = value;
