@@ -24,7 +24,7 @@ async function searchRecord(value) {
     const jsonData = await getJSON();
 
     const found = jsonData.find((record) => {
-      return value.startsWith(record.code) || record.code === value;
+      return record.code === value || value.startsWith(record.code);
     });
 
     if (found) {
