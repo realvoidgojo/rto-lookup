@@ -49,8 +49,8 @@ inputEl.addEventListener("keyup", (e) => {
   const inputContainer = inputEl.closest(".input-container");
   // checking the enter key
   if (e.key === "Enter") {
-    const pattern1 = /^[A-Z]{2}\d{2}$/;
-    const pattern2 = /^[A-Z]{2}\d{2}[A-Z]$/;
+    const pattern1 = /^[A-Z]{2}\d{2}[A-Z]$/;
+    const pattern2 =  /^[A-Z]{2}\d{2}$/;
     const pattern3 = /^[A-Z]{2}\d{2}[A-Z]\d{4}$/;
     const pattern4 = /^[A-Z]{2}\d{2}[A-Z]{2}\d{4}$/;
     // regex validation
