@@ -91,57 +91,108 @@
         </div>
       </div>
 
-      <!--Loading Spinner-->
+      <!--Result Section with Integrated Loading-->
       <div
-        id="loadingSpinner"
-        class="flex items-center justify-center mt-50 hidden"
+        class="relative bg-white shadow m-10 p-5 rounded transition-all duration-300 ease-in-out"
+        id="resultSection"
       >
-        <svg
-          class="animate-spin h-5 w-5 text-white"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
+        <!-- Loading Overlay -->
+        <div
+          id="loadingSpinner"
+          class="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center hidden transition-opacity duration-300"
         >
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            stroke-width="4"
-          ></circle>
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8v8H4z"
-          ></path>
-        </svg>
-      </div>
+          <svg
+            class="animate-spin h-8 w-8 text-[#285DA1]"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8H4z"
+            ></path>
+          </svg>
+        </div>
 
-      <!--Result-->
-      <div class="bg-white shadow m-10 p-5 rounded hidden" id="resultSection">
-        <span class="text-xs"> Your Query:</span>
-        <span class="font-semibold" id="query">TN95</span>
-        <table class="my-5 text-sm w-full" id="resultTable">
-          <tr>
-            <td class="border border-gray-400 p-2">ID</td>
-            <td class="border border-gray-400 p-2" id="id">1</td>
-          </tr>
-          <tr>
-            <td class="border border-gray-400 p-2">Code</td>
-            <td class="border border-gray-400 p-2" id="rto_code">TN01</td>
-          </tr>
-          <tr>
-            <td class="border border-gray-400 p-2">Location</td>
-            <td class="border border-gray-400 p-2" id="location">
-              Chennai (Central): Ayanavaram
-            </td>
-          </tr>
-          <tr>
-            <td class="border border-gray-400 p-2">District</td>
-            <td class="border border-gray-400 p-2" id="district">Chennai</td>
-          </tr>
-        </table>
+        <!-- Results Content -->
+        <div class="result-content transition-opacity duration-300">
+          <!-- Format indication Message -->
+          <div id="initialState" class="text-center py-8">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-16 w-16 mx-auto text-gray-300 mb-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"
+              />
+            </svg>
+            <h2 class="text-gray-500 text-lg font-medium mb-2">
+              Enter a License Plate Number
+            </h2>
+            <p class="text-gray-400 text-sm">
+              Example formats: TN01, TN01A, TN01AB, TN01A1234, TN01AB1234
+            </p>
+          </div>
+
+          <!-- Search Results -->
+          <div id="searchResults" class="hidden">
+            <div class="flex items-center gap-2 mb-4">
+              <span class="text-xs text-gray-500">Your Query:</span>
+              <span
+                class="font-semibold text-sm bg-[#285DA1] text-white px-2 py-1 rounded tracking-widest"
+                id="query"
+              ></span>
+            </div>
+
+            <table class="my-5 text-sm w-full border-collapse" id="resultTable">
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="border border-gray-300 p-3 bg-gray-50 font-medium">
+                  ID
+                </td>
+                <td class="border border-gray-300 p-3" id="id"></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="border border-gray-300 p-3 bg-gray-50 font-medium">
+                  Code
+                </td>
+                <td class="border border-gray-300 p-3" id="rto_code"></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="border border-gray-300 p-3 bg-gray-50 font-medium">
+                  Location
+                </td>
+                <td class="border border-gray-300 p-3" id="location"></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="border border-gray-300 p-3 bg-gray-50 font-medium">
+                  District
+                </td>
+                <td class="border border-gray-300 p-3" id="district"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
     </main>
 

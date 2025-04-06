@@ -841,55 +841,55 @@
   },
   {
     "id": 141,
-    "code": "DL1",
+    "code": "DL01",
     "location": "Civil Lines",
     "district": "North District:Civil Lines, Pratap Bagh, Kotwali, Bela Road, Andha Mugal, Mori Gate, Majnu Ka Tila, Gulabi Bagh, Red Fort, Sant Nagar, Sarai Rohilla, Yamuna Bazar, Roop Nagar, Inder Lok, Lahori Gate, Maurice Nagar, Sadar Bazar, Church Mission, Shakti Nagar, Ahata Kedara, Town Hall, Subzi Mandi, Bara Hindu Rao, Nai Sarak, Tis Hazari, Kashmere Gate, Chandni Chowk"
   },
   {
     "id": 142,
-    "code": "DL2",
+    "code": "DL02",
     "location": "Indraprastha Depot",
     "district": "New Delhi District:Tilak Marg, R.M.L.Hospital, Chanakya Puri, Parliament St., Sucheta Kriplani Hospital, Tughlaq Road, Boat Club, Mandi House, North Avenue Panchkuian Road, Kali Bari Marg, South Avenue, Gole Market, Rabinder Nagar, Malcha Marg, Connaught Place, Kaka Nagar"
   },
   {
     "id": 143,
-    "code": "DL3",
+    "code": "DL03",
     "location": "Sheikh Sarai",
     "district": "South District:Hauz Khas, Amar Colony, C.R Park, Malviya Nagar, Garhi, Ambedkar Nagar, Saket, Okhla, Madangir, Pushp Vihar, Sunlight Colony, Sainik Farm, Mehrauli, New Friends Colony, Kalkaji, Defence Colony, Nehru Place, Gulmohar Park, Sukhdev Vihar, Badarpur, AIIMS, Bharat Nagar, Sarita Vihar, Lodhi Colony, Hz.Nizammudin, Sangam Vihar, Pragati Vihar, Jangpura, East Kidwai Nagar, Khan Pur, Sarai Kale Khan, Lajpat Nagar, Greater Kailash, Panchsheel"
   },
   {
     "id": 144,
-    "code": "DL4",
+    "code": "DL04",
     "location": "Janakpuri",
     "district": "West District I:Janakpuri, Vikaspuri, Keshopur, TilakNagar, Uttam Nagar, Mohan Garden, Nawada, Kakrola, Paschim Vihar, Meera Bagh, New Multan Nagar, Nangloi, Tikri Border, Nilothi, Nangloi Jat, Mundka, Baprola, Hari Nagar, Ashok Nagar, Prem Nagar, Subhash Nagar"
   },
   {
     "id": 145,
-    "code": "DL5",
+    "code": "DL05",
     "location": "Loni Road",
     "district": "North East District:Seelampur, Gamri, Nand Nagari, |"
   },
   {
     "id": 146,
-    "code": "DL6",
+    "code": "DL06",
     "location": "Sarai Kale Khan, Delhi",
     "district": "Central District:Daryaganj, Lalkuan, Prasha Nagar, Chandni Mahal, I.P. Estate, Rajender Nagar, Turkmangate, LNJP Hospital, Pusa Road, Jama Masjid, Pahar Ganj, Sita Ram Bazar, Kamla Market, DBG Road, Sangtrashan, Shahganj, Shidipura, Nabi Karim, Hauz Qazi, Govt. Qr. Devnagar, Ballimaran, Karol Bagh"
   },
   {
     "id": 147,
-    "code": "DL7",
+    "code": "DL07",
     "location": "Mayur Vihar",
     "district": "East District I:KalyanPuri, Laxmi Nagar, PreetVihar, New Ashok Nagar, Patparganj, Shakarpur, Trilokpuri, Mayur ViharI&II, Karkardooma"
   },
   {
     "id": 148,
-    "code": "DL8",
+    "code": "DL08",
     "location": "Wazirpur",
     "district": "North West District I:Model Town, Jahangirpuri, Sangam Park, Adarsh Nagar, Vijay Nagar, Keshav Puram, Ashok Vihar, Shalimar Bagh, Wazirpur, Saraswati Vihar, Kingsway Camp, Pitampura, Mukherjee Nagar, Rani Bagh, Azadpur, Rampura, Tri Nagar, Gujrawalan"
   },
   {
     "id": 149,
-    "code": "DL9",
+    "code": "DL09",
     "location": "Dwarka, Delhi",
     "district": "South West District I:Inderpuri, Naraina, Mayapuri, Najafgarh, Kapashera, Zafarpur Kalan, Dwaraka, Vasant Vihar, R.K.Puram, Sarojini Nagar, Vasant Kunj, Delhi Cantt., Dabri"
   },
@@ -919,19 +919,19 @@
   },
   {
     "id": 154,
-    "code": "DL1A",
+    "code": "DL01A",
     "location": "Ambulances",
     "district": "The letter A is reserved for ambulances."
   },
   {
     "id": 155,
-    "code": "DL1B",
+    "code": "DL01B",
     "location": "DMRC Feeder Buses",
     "district": "The letter B is reserved for DMRC feeder buses."
   },
   {
     "id": 156,
-    "code": "DL*C, CA  CZ, CAA...",
+    "code": ["DL*C", "DL*CA", "Dl*CZ", "Dl*CAA"],
     "location": "Fuel Powered/Electric Cars",
     "district": "The letter C is reserved for fuel powered/electric cars."
   },
@@ -943,79 +943,79 @@
   },
   {
     "id": 158,
-    "code": "DL*ER, ERA and so on",
+    "code": "DLER",
     "location": "Electric Rickshaws",
     "district": "The letter series ER is reserved for electric rickshaws."
   },
   {
     "id": 159,
-    "code": "DL2F",
+    "code": "DL02F",
     "location": "VIP Passenger Vehicles",
     "district": "The letter F is reserved for vanity (VIP) series numbers for passenger vehicles."
   },
   {
     "id": 160,
-    "code": "DL1G",
+    "code": "DL01G",
     "location": "Heavy Trucks",
     "district": "The letter G is reserved for heavy trucks."
   },
   {
     "id": 161,
-    "code": "DL1K",
+    "code": "DL01K",
     "location": "School Vans",
     "district": "The letter K is reserved for school vans."
   },
   {
     "id": 162,
-    "code": "DL1L",
+    "code": "DL01L",
     "location": "Light Trucks",
     "district": "The letter L is reserved for light trucks."
   },
   {
     "id": 163,
-    "code": "DL1M",
+    "code": "DL01M",
     "location": "Midsize Trucks",
     "district": "The letter M is reserved for midsize trucks."
   },
   {
     "id": 164,
-    "code": "DL1N",
+    "code": "DL01N",
     "location": "Selfdrive Vehicles",
     "district": "The letter N is reserved for selfdrive vehicles (comes under commercial vehicle category)."
   },
   {
     "id": 165,
-    "code": "DL1P",
+    "code": "DL01P",
     "location": "Buses",
     "district": "The letter P is reserved for buses, including DTC, DIMTS, tourist and even heavy school buses."
   },
   {
     "id": 166,
-    "code": "DL1Q",
+    "code": "DL01Q",
     "location": "Phatphat Seva / Rural Share Taxis",
     "district": "The letter Q is reserved for phatphat seva or rural service share taxis."
   },
   {
     "id": 167,
-    "code": "DL1R",
+    "code": "DL01R",
     "location": "Auto Rickshaws",
     "district": "The letter R is reserved for auto rickshaws."
   },
   {
     "id": 168,
-    "code": "DL1RT",
+    "code": "DL01RT",
     "location": "Radio/App Taxis",
     "district": "The letter series RT is reserved for radio/app taxis."
   },
   {
     "id": 169,
-    "code": "DL1RTA",
+    "code": "DL01RTA",
     "location": "Radio/App Taxis",
     "district": "The letter series RTA is reserved for radio/app taxis."
   },
   {
     "id": 170,
-    "code": "DLSA",
+    "code": "DL0SA",
     "location": "Scooters and Motorcycles",
     "district": "The letter S is reserved for fuel powered/electric scooters and motorcycles."
   },
@@ -1033,37 +1033,37 @@
   },
   {
     "id": 173,
-    "code": "DL1T",
+    "code": "DL01T",
     "location": "Taxis",
     "district": "The letter T is reserved for taxis."
   },
   {
     "id": 174,
-    "code": "DL1V",
+    "code": "DL01V",
     "location": "Light Buses",
     "district": "The letter V is reserved for light buses."
   },
   {
     "id": 175,
-    "code": "DL1W",
+    "code": "DL01W",
     "location": "Rural Share Taxis",
     "district": "The letter W is reserved for rural service share taxis."
   },
   {
     "id": 176,
-    "code": "DL2W",
+    "code": "DL02W",
     "location": "Rural Share Taxis",
     "district": "The letter W is reserved for rural service share taxis."
   },
   {
     "id": 177,
-    "code": "DL1Y",
+    "code": "DL01Y",
     "location": "Commercial Private Taxis",
     "district": "The letter Y is reserved for commercial private taxis."
   },
   {
     "id": 178,
-    "code": "DL1Z",
+    "code": "DL01Z",
     "location": "Commercial Private Taxis",
     "district": "The letter Z is reserved for commercial private taxis."
   },
