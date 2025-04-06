@@ -1,3 +1,4 @@
+// Required elements
 const inputEl = document.querySelector("input[type='search']");
 const loadingSpinner = document.querySelector("#loadingSpinner");
 const resultSection = document.querySelector("#resultSection");
@@ -23,15 +24,39 @@ async function searchRecord(value) {
     loadingSpinner.classList.remove("hidden");
     const jsonData = await getJSON();
 
-    const found = jsonData
-  .filter(record => value.startsWith(record.code))
-  .sort((a, b) => b.code.length - a.code.length)[0];
+    // Find exact match Entry Record
+    let found = jsonData.find((record) => {
+      if (Array.isArray(record.code)) {
+        return record.code.includes(value);
+      }
+      return record.code === value;
+    });
 
+    // Find an Prefix match Entry Record
+    if (!found) {
+      found = jsonData.find((record) => {
+        if (Array.isArray(record.code)) {
+          return record.code.some((code) =>
+            // Find prefix match Entry Record >=4
+            value.length > 4 ? code === value : value.startsWith(code)
+          );
+        }
+        // Find prefix match Entry Record <=4
+        return value.length > 4
+          ? record.code === value
+          : value.startsWith(record.code);
+      });
+    }
 
     if (found) {
+      // Display the results
       document.querySelector("#query").textContent = value;
       document.querySelector("#id").textContent = found.id;
-      document.querySelector("#rto_code").textContent = found.code;
+      document.querySelector("#rto_code").textContent = Array.isArray(
+        found.code
+      )
+        ? found.code.join(", ")
+        : found.code;
       document.querySelector("#location").textContent = found.location;
       document.querySelector("#district").textContent = found.district;
       resultSection.classList.remove("hidden");
@@ -48,10 +73,10 @@ async function searchRecord(value) {
 inputEl.addEventListener("keyup", (e) => {
   const value = inputEl.value.toUpperCase();
   const inputContainer = inputEl.closest(".input-container");
-  // checking the enter key
+  // checking the enter pressed
   if (e.key === "Enter") {
     const pattern1 = /^[A-Z]{2}\d{2}[A-Z]$/;
-    const pattern2 =  /^[A-Z]{2}\d{2}$/;
+    const pattern2 = /^[A-Z]{2}\d{2}$/;
     const pattern3 = /^[A-Z]{2}\d{2}[A-Z]\d{4}$/;
     const pattern4 = /^[A-Z]{2}\d{2}[A-Z]{2}\d{4}$/;
     // regex validation
@@ -64,10 +89,10 @@ inputEl.addEventListener("keyup", (e) => {
       inputContainer.classList.remove("invalid");
       searchRecord(value);
     } else {
-      // Remove class and force reflow to restart animation
+      // Remove class and restart loading
       inputContainer.classList.remove("invalid");
       void inputContainer.offsetWidth;
-      // Add invalid class back to trigger the animation
+      // Add invalid class to trigger the loading
       inputContainer.classList.add("invalid");
 
       // Remove invalid class after 1000ms
@@ -78,7 +103,7 @@ inputEl.addEventListener("keyup", (e) => {
   }
 });
 
-// Dark mode toggle logic
+// DarkMode Toggle logic
 document.addEventListener("DOMContentLoaded", () => {
   const darkModeToggle = document.querySelector("#darkModeToggle");
   if (darkModeToggle) {
