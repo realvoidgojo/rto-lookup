@@ -1,9 +1,15 @@
 # Dependencies
 node_modules/
+package-lock.json
+
+# Build output
+dist/
+build/
 
 # Environment files
 .env
 .env.local
+.env.production
 
 # IDE files
 .vscode/
@@ -12,3 +18,6 @@ node_modules/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Vite
+.vite/

@@ -1,169 +1,174 @@
-// Required elements
+import { db, collection, getDocs, query, orderBy } from "./firebase-config.js";
+
 const inputEl = document.querySelector("input[type='search']");
 const loadingSpinner = document.querySelector("#loadingSpinner");
 const resultSection = document.querySelector("#resultSection");
+const initialState = document.querySelector("#initialState");
+const searchResults = document.querySelector("#searchResults");
 
-// getting JSON data
-async function getJSON() {
+let cachedRTOData = null;
+
+async function loadRTOData() {
   try {
-    const response = await fetch("./assests/data/rtoData.json");
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
+    if (cachedRTOData) {
+      return cachedRTOData;
     }
-    return await response.json();
+
+    const rtoCollection = collection(db, "rto-data");
+    const q = query(rtoCollection, orderBy("id"));
+    const querySnapshot = await getDocs(q);
+
+    const data = [];
+    querySnapshot.forEach((doc) => {
+      data.push({ docId: doc.id, ...doc.data() });
+    });
+
+    cachedRTOData = data;
+    return data;
   } catch (error) {
-    console.error("Error loading data:", error);
-    return [];
+    console.error("Error loading RTO data:", error);
+    throw new Error("Failed to load RTO data");
   }
 }
 
-// Search patterns
 const PATTERNS = {
-  BASIC_RTO: /^[A-Z]{2}\d{2}$/, // e.g TN20
-  EXTENDED_RTO: /^[A-Z]{2}\d{2}[A-Z]$/, // e.g TN20X
-  EXTENDED_RTO_2: /^[A-Z]{2}\d{2}[A-Z]{2}$/, // e.g TN20ZX
-  VEHICLE_NUMBER: /^[A-Z]{2}\d{2}[A-Z]\d{4}$/, // e.g TN20X8055
-  VEHICLE_NUMBER_2: /^[A-Z]{2}\d{2}[A-Z]{2}\d{4}$/, // e.g TN20ZX8005
+  BASIC_RTO: /^[A-Z]{2}\d{2}$/,
+  EXTENDED_RTO: /^[A-Z]{2}\d{2}[A-Z]$/,
+  EXTENDED_RTO_2: /^[A-Z]{2}\d{2}[A-Z]{2}$/,
+  VEHICLE_NUMBER: /^[A-Z]{2}\d{2}[A-Z]\d{4}$/,
+  VEHICLE_NUMBER_2: /^[A-Z]{2}\d{2}[A-Z]{2}\d{4}$/,
+  DL_PATTERN_1: /^DL\d{2}[A-Z]$/,
+  DL_PATTERN_2: /^DL\d{1}[A-Z]$/,
+  DL_PATTERN_3: /^DL[A-Z]{2}$/,
+  DL_PATTERN_4: /^DL[A-Z]{2,3}$/,
+  DL_PATTERN_5: /^DL\d{2}[A-Z]{2}$/,
+  DL_PATTERN_6: /^DL\d{2}[A-Z]{3}$/,
 };
 
-// search the record in JSON
-async function searchRecord(value) {
-  try {
-    loadingSpinner.classList.remove("hidden");
-    document.querySelector("#initialState").classList.add("hidden");
-    document.querySelector("#searchResults").classList.remove("hidden");
+function isValidFormat(value) {
+  const isDelhiPattern = value.startsWith("DL") && 
+    Object.values(PATTERNS)
+      .filter(pattern => pattern.source.includes("DL"))
+      .some(pattern => pattern.test(value));
 
-    const jsonData = await getJSON();
+  return Object.values(PATTERNS).some(pattern => pattern.test(value)) || isDelhiPattern;
+}
 
-    // Make transition smoother (adding delay)
-    await new Promise((resolve) => setTimeout(resolve, 300));
+function findRTORecord(data, searchValue) {
+  const baseRTO = searchValue.slice(0, 4);
+  const extendedRTO1 = searchValue.slice(0, 5);
+  const extendedRTO2 = searchValue.slice(0, 6);
 
-    // RTO codes types
-    const baseRTO = value.slice(0, 4); // TN20
-    const extendedRTO1 = value.slice(0, 5); // TN20X (special case) gives exact match
-    const extendedRTO2 = value.slice(0, 6); // TN20XZ
+  let found = data.find((record) => {
+    if (Array.isArray(record.code)) {
+      return record.code.some((code) => {
+        if (code.includes("*")) {
+          const regex = new RegExp("^" + code.replace("*", "\\d") + "$");
+          return regex.test(searchValue);
+        }
+        return code === searchValue;
+      });
+    }
+    return record.code === searchValue;
+  });
 
-    // Find exact match Entry Record
-    let found = jsonData.find((record) => {
+  if (!found) {
+    found = data.find((record) => {
       if (Array.isArray(record.code)) {
-        return record.code.some((code) => {
-          // Handle wildcard codes (only for Delhi case)
-          if (code.includes("*")) {
-            const regex = new RegExp("^" + code.replace("*", "\\d") + "$");
-            return regex.test(value);
-          }
-
-          // Try exact match first
-          if (code === value) return true;
-
-          // Try extended RTO matches
-          if (PATTERNS.VEHICLE_NUMBER.test(value) && code === extendedRTO1)
-            return true;
-          if (PATTERNS.VEHICLE_NUMBER_2.test(value) && code === extendedRTO2)
-            return true;
-
-          return false;
-        });
+        return record.code.includes(extendedRTO1) || record.code.includes(baseRTO);
       }
 
-      // Handling wildcard codes ,e.g. codes with '*'
-      if (record.code.includes("*")) {
-        const regex = new RegExp("^" + record.code.replace("*", "\\d") + "$");
-        return regex.test(value); // Match i/p val against wildcard
-      }
-
-      // Try exact match first
-      if (record.code === value) return true;
-
-      // Try extended rto matches
-      if (PATTERNS.VEHICLE_NUMBER.test(value) && record.code === extendedRTO1)
-        return true;
-      if (PATTERNS.VEHICLE_NUMBER_2.test(value) && record.code === extendedRTO2)
-        return true;
+      if (PATTERNS.VEHICLE_NUMBER.test(searchValue) && record.code === extendedRTO1) return true;
+      if (PATTERNS.VEHICLE_NUMBER_2.test(searchValue) && record.code === extendedRTO2) return true;
 
       return false;
     });
+  }
 
-    // If no match found, back 2 chekc base RTO
-    if (!found) {
-      found = jsonData.find((record) => {
-        if (Array.isArray(record.code)) {
-          return record.code.includes(baseRTO);
-        }
-        return record.code === baseRTO;
-      });
-    }
+  if (!found) {
+    found = data.find((record) => {
+      if (Array.isArray(record.code)) {
+        return record.code.includes(baseRTO);
+      }
+      return record.code === baseRTO;
+    });
+  }
 
-    if (found) {
-      document.querySelector("#query").textContent = value;
-      document.querySelector("#id").textContent = found.id;
-      document.querySelector("#rto_code").textContent = Array.isArray(
-        found.code
-      )
-        ? found.code.join(", ")
-        : found.code;
-      document.querySelector("#location").textContent = found.location;
-      document.querySelector("#district").textContent = found.district;
-      resultSection.classList.remove("hidden");
+  return found;
+}
+
+function displayResults(query, record) {
+  document.querySelector("#query").textContent = query;
+  document.querySelector("#id").textContent = record.id;
+  document.querySelector("#rto_code").textContent = Array.isArray(record.code)
+    ? record.code.join(", ")
+    : record.code;
+  document.querySelector("#location").textContent = record.location;
+  document.querySelector("#district").textContent = record.district;
+  
+  initialState.classList.add("hidden");
+  searchResults.classList.remove("hidden");
+  resultSection.classList.remove("hidden");
+}
+
+function hideResults() {
+  resultSection.classList.add("hidden");
+  initialState.classList.remove("hidden");
+  searchResults.classList.add("hidden");
+}
+
+function showLoading() {
+  loadingSpinner.classList.remove("hidden");
+  initialState.classList.add("hidden");
+  searchResults.classList.remove("hidden");
+}
+
+function hideLoading() {
+  loadingSpinner.classList.add("hidden");
+}
+
+async function searchRecord(value) {
+  try {
+    showLoading();
+    const data = await loadRTOData();
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const record = findRTORecord(data, value);
+    
+    if (record) {
+      displayResults(value, record);
     } else {
-      resultSection.classList.add("hidden");
-      document.querySelector("#initialState").classList.remove("hidden");
-      document.querySelector("#searchResults").classList.add("hidden");
+      hideResults();
     }
   } catch (error) {
-    console.error("Error searching record:", error);
-    resultSection.classList.add("hidden");
-    document.querySelector("#initialState").classList.remove("hidden");
-    document.querySelector("#searchResults").classList.add("hidden");
+    console.error("Search error:", error);
+    hideResults();
   } finally {
-    loadingSpinner.classList.add("hidden");
+    hideLoading();
   }
 }
 
-inputEl.addEventListener("keyup", (e) => {
-  const value = inputEl.value.toUpperCase();
+function showValidationError() {
   const inputContainer = inputEl.closest(".input-container");
+  inputContainer.classList.remove("invalid");
+  void inputContainer.offsetWidth;
+  inputContainer.classList.add("invalid");
+  setTimeout(() => inputContainer.classList.remove("invalid"), 1000);
+}
 
-  if (e.key === "Enter") {
-    // Special for DL codes
-    const dlPattern1 = /^DL\d{2}[A-Z]$/; // e.g DL01T
-    const dlPattern2 = /^DL\d{1}[A-Z]$/; // e.g DL1D
-    const dlPattern3 = /^DL[A-Z]{2}$/; // e.g DLER
-    const dlPattern4 = /^DL[A-Z]{2,3}$/; // e.g DLSZ, DLSAA
-    const dlPattern5 = /^DL\d{2}[A-Z]{2}$/; // e.g DL01RT
-    const dlPattern6 = /^DL\d{2}[A-Z]{3}$/; // e.g DL01RTA
+inputEl.addEventListener("keyup", (e) => {
+  if (e.key !== "Enter") return;
 
-    // Check if i/p matches any valid pattern
-    const isValidFormat =
-      PATTERNS.BASIC_RTO.test(value) ||
-      PATTERNS.EXTENDED_RTO.test(value) ||
-      PATTERNS.EXTENDED_RTO_2.test(value) ||
-      PATTERNS.VEHICLE_NUMBER.test(value) ||
-      PATTERNS.VEHICLE_NUMBER_2.test(value) ||
-      (value.startsWith("DL") &&
-        (dlPattern1.test(value) ||
-          dlPattern2.test(value) ||
-          dlPattern3.test(value) ||
-          dlPattern4.test(value) ||
-          dlPattern5.test(value) ||
-          dlPattern6.test(value)));
+  const value = inputEl.value.toUpperCase().trim();
+  
+  if (!value) return;
 
-    if (isValidFormat) {
-      inputContainer.classList.remove("invalid");
-      searchRecord(value);
-    } else {
-      inputContainer.classList.remove("invalid");
-      void inputContainer.offsetWidth;
-      inputContainer.classList.add("invalid");
-      setTimeout(() => {
-        inputContainer.classList.remove("invalid");
-      }, 1000);
-    }
+  if (isValidFormat(value)) {
+    searchRecord(value);
+  } else {
+    showValidationError();
   }
 });
 
-// DarkMode Toggle
 document.addEventListener("DOMContentLoaded", () => {
   const darkModeToggle = document.querySelector("#darkModeToggle");
   if (darkModeToggle) {

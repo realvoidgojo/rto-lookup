@@ -2,36 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="widtd=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RTO Finder</title>
-    <!--google fonts-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
     />
-    <!--tailwindcss CDN-->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!--CSS-->
     <link rel="stylesheet" href="./assests/style.css" />
   </head>
   <body class="bg-[#304661]">
     <main>
-      <!--Header-->
       <div class="h-64 bg-[#285DA1]">
-        <!-- Navbar -->
         <nav class="bg-[#285DA1] p-4">
           <div class="flex justify-between items-center">
-            <!--Toggle Dark Mode-->
             <button
               id="darkModeToggle"
               class="bg-gray-800 text-xs text-white py-1 px-2 rounded hover:bg-gray-900 transition-colors duration-300"
             >
               Toggle Dark Mode
             </button>
-
-            <!--About and GitHub-->
             <ul
               class="flex space-x-6 text-[#E09301] font-semibold text-sm uppercase"
             >
@@ -39,7 +31,6 @@
                 class="relative group cursor-pointer hover:text-white transition-colors duration-300"
               >
                 About
-                <!--Dev Tooltip -->
                 <span
                   class="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-max px-3 py-1 text-xs text-white bg-gray-800 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 >
@@ -57,15 +48,11 @@
             </ul>
           </div>
         </nav>
-
-        <!--Search Section-->
         <div class="flex flex-col justify-center items-center space-y-4">
           <h1 class="text-3xl font-extrabold text-[#E09301]">
             <span class="block text-base text-gray-100 mb-1">India's</span>
             <span>RTO License Lookup</span>
           </h1>
-
-          <!-- Search Bar -->
           <div class="relative w-half max-w-sm mx-auto">
             <div class="input-container relative">
               <svg
@@ -90,13 +77,10 @@
           </div>
         </div>
       </div>
-
-      <!--Result Section with Integrated Loading-->
       <div
         class="relative bg-white shadow m-10 p-5 rounded transition-all duration-300 ease-in-out"
         id="resultSection"
       >
-        <!-- Loading Overlay -->
         <div
           id="loadingSpinner"
           class="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center hidden transition-opacity duration-300"
@@ -122,10 +106,7 @@
             ></path>
           </svg>
         </div>
-
-        <!-- Results Content -->
         <div class="result-content transition-opacity duration-300">
-          <!-- Format indication Message -->
           <div id="initialState" class="text-center py-8">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -154,8 +135,6 @@
               Example formats: TN01, TN01A, TN01AB, TN01A1234, TN01AB1234
             </p>
           </div>
-
-          <!-- Search Results -->
           <div id="searchResults" class="hidden">
             <div class="flex items-center gap-2 mb-4">
               <span class="text-xs text-gray-500">Your Query:</span>
@@ -196,6 +175,6 @@
       </div>
     </main>
 
-    <script src="./assests/js/main.js"></script>
+    <script src="./assests/js/main.js" type="module"></script>
   </body>
 </html>
