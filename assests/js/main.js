@@ -169,11 +169,81 @@ inputEl.addEventListener("keyup", (e) => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const darkModeToggle = document.querySelector("#darkModeToggle");
-  if (darkModeToggle) {
-    darkModeToggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-    });
+inputEl.addEventListener("input", (e) => {
+  const value = e.target.value.trim();
+  if (!value) {
+    hideResults();
+    initialState.classList.remove("hidden");
+    searchResults.classList.add("hidden");
   }
+});
+
+// Theme toggle system
+function initializeDarkMode() {
+  const darkModeToggle = document.querySelector("#darkModeToggle");
+  if (!darkModeToggle) return;
+
+  const savedTheme = localStorage.getItem('theme');
+  
+  // Default to dark mode unless user explicitly chose light mode
+  if (savedTheme === 'light') {
+    document.documentElement.classList.remove('dark');
+  } else {
+    document.documentElement.classList.add('dark');
+    // Set default theme in localStorage if not already set
+    if (!savedTheme) {
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+
+  darkModeToggle.addEventListener("click", () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+    
+    const slider = darkModeToggle.querySelector('.toggle-slider');
+    if (slider) {
+      slider.style.transform = 'scale(0.9)';
+      setTimeout(() => {
+        slider.style.transform = '';
+      }, 150);
+    }
+    
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = `Switched to ${isDark ? 'dark' : 'light'} mode`;
+    document.body.appendChild(announcement);
+    setTimeout(() => document.body.removeChild(announcement), 1000);
+  });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    }
+  });
+  
+  darkModeToggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      darkModeToggle.click();
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("RTO Lookup application initialized");
+  
+  initializeDarkMode();
+  
+  loadRTOData().catch(error => {
+    console.warn("Failed to preload RTO data:", error);
+  });
+  
+  inputEl.focus();
 });
